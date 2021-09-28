@@ -12,12 +12,12 @@ if (process.env.NODE_ENV === 'production') {
 
 export const context = async ({ req, res }) => {
     try {
-        const { user: auth0User } = await auth0.getSession(req, res);
-        // const  auth0User  = {
-        //     sub:'my-sub',
-        //     picture : 'my-picture',
-        //     nickname: 'my-nickname'
-        // };
+        // const { user: auth0User } = await auth0.getSession(req, res);
+        const  auth0User  = {
+            sub:'my-sub',
+            picture : 'my-picture',
+            nickname: 'my-nickname'
+        };
         let user = await prisma.user.findUnique({ where: { auth0: auth0User.sub } });
         if (!user) {
             const { picture, nickname, sub } = auth0User;
