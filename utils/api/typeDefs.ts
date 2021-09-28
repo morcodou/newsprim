@@ -18,13 +18,32 @@ export const typeDefs = gql`
         url:String
     }
 
+    type Bundle {
+        id:String
+        name:String
+        description:String
+    }
+
+    input BundleInput {
+        id:String
+    }
+
+    input BundleCreateInput {
+        id:String
+        name:String
+        description:String
+    }
+
     type Query  {
         hello:String,
         feed(data:FeedInput):Feed,
-        feeds:[Feed]    
+        feeds:[Feed],
+        bundle(data:BundleInput):Bundle,
+        bundles:[Bundle]    
     }
 
     type Mutation  {
         createFeed(data:FeedCreateInput):Feed,
+        createBundle(data:BundleCreateInput):Bundle,
     }
 `;
