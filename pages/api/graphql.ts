@@ -1,8 +1,14 @@
 import { ApolloServer, gql } from 'apollo-server-micro'
-import { resolvers, typeDefs } from '../../utils/api'
-import { makeExecutableSchema } from "@graphql-tools/schema";
+import { resolvers, typeDefs, log, permissions } from '../../utils/api'
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { applyMiddleware } from 'graphql-middleware';
 
-const schema = makeExecutableSchema({ typeDefs, resolvers });
+const schema = applyMiddleware(
+    makeExecutableSchema({ typeDefs, resolvers }),
+    log,
+    permissions,
+);
+
 const apolloServer = new ApolloServer({
     schema
 });
