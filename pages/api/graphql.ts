@@ -1,5 +1,5 @@
 import { ApolloServer, gql } from 'apollo-server-micro'
-import { resolvers, typeDefs, log, permissions } from '../../utils/api'
+import { resolvers, typeDefs, log, permissions, context } from '../../utils/api'
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { applyMiddleware } from 'graphql-middleware';
 
@@ -10,7 +10,8 @@ const schema = applyMiddleware(
 );
 
 const apolloServer = new ApolloServer({
-    schema
+    schema,
+    context
 });
 
 const startServer = apolloServer.start();

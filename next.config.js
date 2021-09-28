@@ -2,27 +2,32 @@ require('dotenv').config();
 
 const {
     DATABASE_URL,
-    AUTH0_CLIENTID,
-    AUTH0_DOMAIN,
+    AUTH0_CLIENT_ID,
+    AUTH0_ISSUER_BASE_URL,
     AUTH0_CLIENT_SECRET,
     AUTH0_SCOPE,
-    AUTH0_COOKIE,
-    BACKEND_ADDRESS
+    AUTH0_SECRET,
+    AUTH0_BASE_URL,
 } = process.env;
 
 module.exports = {
     publicRuntimeConfig: {
-        BACKEND_URL: `${BACKEND_ADDRESS}/api/graphql`
+        BACKEND_URL: `${AUTH0_BASE_URL}/api/graphql`
     },
     serverRuntimeConfig: {
         auth: {
-            domain: AUTH0_DOMAIN,
-            clientId: AUTH0_CLIENTID,
+            baseURL: AUTH0_BASE_URL,
+            issuerBaseURL: AUTH0_ISSUER_BASE_URL,
+            clientID: AUTH0_CLIENT_ID,
             clientSecret: AUTH0_CLIENT_SECRET,
-            scope: AUTH0_SCOPE,
-            redirectUri: `${BACKEND_ADDRESS}/api/callback`,
-            postLogoutredirectUri: `${BACKEND_ADDRESS}/`,
+            secret: AUTH0_SECRET,
         },
-        cookieSecret: AUTH0_COOKIE,
+        authorizationParams: {
+            scope: AUTH0_SCOPE,
+        },
+        routes: {
+            callback: `/api/callback`,
+            postLogoutRedirect: `/`
+        }
     }
 }
