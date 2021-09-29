@@ -75,6 +75,22 @@ export const typeDefs = gql`
         id:String
         name:String
         description:String
+        tags:NestedBundleTagCreateInput
+    }
+
+    input NestedBundleTagCreateInput {
+        create:[BundleTagCreateInput]
+        connect:[BundleTagWhereUniqueInput]
+    }
+
+    input BundleTagCreateInput {
+        id:String
+        name:String
+    }
+
+    input BundleTagWhereUniqueInput {
+        id:String
+        name:String
     }
 
     type Query  {
