@@ -76,6 +76,17 @@ export const typeDefs = gql`
         name:String
         description:String
         tags:NestedBundleTagCreateInput
+        feeds: NestedBundleFeedCreateInput
+    }
+   
+    input NestedBundleFeedCreateInput {
+        create:[FeedCreateInput]
+        connect:[FeedWhereUniqueInput]
+    }
+
+    input FeedWhereUniqueInput {
+        id:String
+        url:String
     }
 
     input NestedBundleTagCreateInput {
