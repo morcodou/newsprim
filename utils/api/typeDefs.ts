@@ -118,12 +118,27 @@ export const typeDefs = gql`
         likeState:Boolean
     }
 
+    input FindFeedsInput {
+        search:String
+    }
+
+    input FindFeedTagsInput {
+        search:String
+    }
+
+    input FindBundleTagsInput {
+        search:String
+    }
+
     type Query  {
         hello:String,
         feed(data:FeedInput):Feed,
         feeds:[Feed],
         bundle(data:BundleInput):Bundle,
-        bundles:[Bundle]    
+        bundles:[Bundle],
+        findFeedTags(data:FindFeedTagsInput):[FeedTag],
+        findBundleTags(data:FindBundleTagsInput):[BundleTag],
+        findFeeds(data:FindFeedsInput):[Feed],
     }
 
 
