@@ -1,3 +1,4 @@
+import { verifyOwnership } from ".";
 
 const createFieldRoselver = (modelName, parameterName) => ({
     [parameterName]: async ({ id }, args, { prisma }) => {
@@ -44,14 +45,14 @@ export const resolvers = {
         }),
         findBundleTags: (parent, { data }, { prisma }) => prisma.bundleTag.findMany({
             where: { name: { contains: data.search } }
-        }),      
+        }),
         findFeeds: (parent, { data }, { prisma }) => prisma.feed.findMany({
             where: { name: { contains: data.search } }
-        }),      
+        }),
     },
 
     Mutation: {
-        createFeed: (parent, { data }, { prisma, user }) => {
+        createFeed: async (parent, { data }, { prisma, user }) => {
             const author = { author: { connect: { id: user.id } } };
             const feed = prisma.feed.create({
                 data: {
@@ -62,7 +63,7 @@ export const resolvers = {
             return feed;
         },
 
-        createBundle: (parent, { data }, { prisma, user }) => {
+        createBundle: async (parent, { data }, { prisma, user }) => {
             const author = { author: { connect: { id: user.id } } };
 
             const bundle = prisma.bundle.create({
@@ -94,6 +95,36 @@ export const resolvers = {
                 {
                     where: { id: feedId },
                     data: { likes: { [connectState]: { id: user.id } } }
+                }
+            );
+        },
+
+        updateFeed: async (parent, { data: { id, ...feedUpdate } }, { prisma, user }) => {
+            const feed = await prisma.feed.findUnique({
+                where: { id },
+                include: { author: true }
+            });
+
+            await verifyOwnership(feed, user);
+            return prisma.feed.update(
+                {
+                    where: { id },
+                    data: { ...feedUpdate }
+                }
+            );
+        },
+
+        updateBundle: async (parent, { data: { id, ...bundleUpdate } }, { prisma, user }) => {
+            const bundle = await prisma.bundle.findUnique({
+                where: { id },
+                include: { author: true }
+            });
+
+            await verifyOwnership(bundle, user);
+            return prisma.bundle.update(
+                {
+                    where: { id },
+                    data: { ...bundleUpdate }
                 }
             );
         },

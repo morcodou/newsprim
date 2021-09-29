@@ -40,6 +40,19 @@ export const typeDefs = gql`
         tags:NestedFeedTagCreateInput
     }
 
+    input FeedUpdateInput {
+        id:String
+        name:String
+        url:String
+        tags:NestedFeedTagUpdateInput
+    }
+
+    input NestedFeedTagUpdateInput {
+        create:[FeedTagCreateInput]
+        connect:[FeedTagWhereUniqueInput]
+        disconnect:[FeedTagWhereUniqueInput]
+    }
+
     input NestedFeedTagCreateInput {
         create:[FeedTagCreateInput]
         connect:[FeedTagWhereUniqueInput]
@@ -82,7 +95,27 @@ export const typeDefs = gql`
         tags:NestedBundleTagCreateInput
         feeds: NestedBundleFeedCreateInput
     }
-   
+
+    input BundleUpdateInput {
+        id:String
+        name:String
+        description:String
+        tags:NestedBundleTagUpdateInput
+        feeds: NestedBundleFeedUpdateInput
+    }
+
+    input NestedBundleTagUpdateInput {
+        create:[BundleTagCreateInput]
+        connect:[BundleTagWhereUniqueInput]
+        disconnect:[BundleTagWhereUniqueInput]
+    }
+
+    input NestedBundleFeedUpdateInput {
+        create:[FeedCreateInput]
+        connect:[FeedWhereUniqueInput]
+        disconnect:[FeedWhereUniqueInput]
+    }
+
     input NestedBundleFeedCreateInput {
         create:[FeedCreateInput]
         connect:[FeedWhereUniqueInput]
@@ -147,5 +180,7 @@ export const typeDefs = gql`
         createBundle(data:BundleCreateInput):Bundle,
         likeBundle(data:LikeBundleInput):Bundle,
         likeFeed(data:LikeFeedInput):Feed,
+        updateBundle(data:BundleUpdateInput):Bundle,
+        updateFeed(data:FeedUpdateInput):Feed,
     }
 `;
