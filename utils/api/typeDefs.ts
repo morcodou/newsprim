@@ -9,6 +9,8 @@ export const typeDefs = gql`
         picture:String
         feeds:[Feed]
         bundles:[Bundle]
+        feedLikes:[Feed]
+        bundleLikes:[Bundle]
     }
 
     type FeedTag {
@@ -24,6 +26,7 @@ export const typeDefs = gql`
         author:User
         tags:[FeedTag]
         bundles:[Bundle]
+        likes:[User]
     }
 
     input FeedInput {
@@ -65,6 +68,7 @@ export const typeDefs = gql`
         author:User
         tags:[BundleTag]
         feeds:[Feed]
+        likes:[User]
     }
 
     input BundleInput {
@@ -104,6 +108,16 @@ export const typeDefs = gql`
         name:String
     }
 
+    input LikeBundleInput {
+        bundleId:String
+        likeState:Boolean
+    }
+
+    input LikeFeedInput {
+        feedId:String
+        likeState:Boolean
+    }
+
     type Query  {
         hello:String,
         feed(data:FeedInput):Feed,
@@ -112,8 +126,11 @@ export const typeDefs = gql`
         bundles:[Bundle]    
     }
 
+
     type Mutation  {
         createFeed(data:FeedCreateInput):Feed,
         createBundle(data:BundleCreateInput):Bundle,
+        likeBundle(data:LikeBundleInput):Bundle,
+        likeFeed(data:LikeFeedInput):Feed,
     }
 `;

@@ -15,12 +15,14 @@ export const resolvers = {
         ...createFieldRoselver('feed', 'author'),
         ...createFieldRoselver('feed', 'tags'),
         ...createFieldRoselver('feed', 'bundles'),
+        ...createFieldRoselver('feed', 'likes'),
     },
 
     Bundle: {
         ...createFieldRoselver('bundle', 'author'),
         ...createFieldRoselver('bundle', 'tags'),
         ...createFieldRoselver('bundle', 'feeds'),
+        ...createFieldRoselver('bundle', 'likes'),
     },
 
     BundleTag: {
@@ -61,6 +63,30 @@ export const resolvers = {
                 }
             });
             return bundle;
+        },
+
+        likeBundle: (parent, { data }, { prisma, user }) => {
+
+            const { bundleId, likeState } = data;
+            const connectState = likeState ? 'connect' : 'disconnect';
+            return prisma.bundle.update(
+                {
+                    where: { id: bundleId },
+                    data: { likes: { [connectState]: { id: user.id } } }
+                }
+            );
+        },
+
+        likeFeed: (parent, { data }, { prisma, user }) => {
+
+            const { feedId, likeState } = data;
+            const connectState = likeState ? 'connect' : 'disconnect';
+            return prisma.feed.update(
+                {
+                    where: { id: feedId },
+                    data: { likes: { [connectState]: { id: user.id } } }
+                }
+            );
         },
     }
 };
