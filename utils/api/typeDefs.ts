@@ -34,6 +34,22 @@ export const typeDefs = gql`
         id:String
         name:String
         url:String
+        tags:NestedFeedTagCreateInput
+    }
+
+    input NestedFeedTagCreateInput {
+        create:[FeedTagCreateInput]
+        connect:[FeedTagWhereUniqueInput]
+    }
+
+    input FeedTagCreateInput {
+        id:String
+        name:String
+    }
+
+    input FeedTagWhereUniqueInput {
+        id:String
+        name:String
     }
 
     type BundleTag {
