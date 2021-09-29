@@ -11,11 +11,19 @@ export const typeDefs = gql`
         bundles:[Bundle]
     }
 
+    type FeedTag {
+        id:String
+        name:String        
+        feeds:[Feed]
+    }
+
     type Feed {
         id:String
         name:String
         url:String
         author:User
+        tags:[FeedTag]
+        bundles:[Bundle]
     }
 
     input FeedInput {
@@ -28,11 +36,19 @@ export const typeDefs = gql`
         url:String
     }
 
+    type BundleTag {
+        id:String
+        name:String        
+        bundles:[Bundle]
+    }
+
     type Bundle {
         id:String
         name:String
         description:String
         author:User
+        tags:[BundleTag]
+        feeds:[Feed]
     }
 
     input BundleInput {

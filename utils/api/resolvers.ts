@@ -11,8 +11,25 @@ const createFieldRoselver = (modelName, parameterName) => ({
 })
 
 export const resolvers = {
-    Feed: {...createFieldRoselver('feed', 'author')},
-    Bundle: {...createFieldRoselver('bundle', 'author')},
+    Feed: {
+        ...createFieldRoselver('feed', 'author'),
+        ...createFieldRoselver('feed', 'tags'),
+        ...createFieldRoselver('feed', 'bundles'),
+    },
+
+    Bundle: {
+        ...createFieldRoselver('bundle', 'author'),
+        ...createFieldRoselver('bundle', 'tags'),
+        ...createFieldRoselver('bundle', 'feeds'),
+    },
+
+    BundleTag: {
+        ...createFieldRoselver('bundleTag', 'bundles'),
+    },
+
+    FeedTag: {
+        ...createFieldRoselver('feedTag', 'feeds'),
+    },
 
     Query: {
         hello: (parent, args, context) => 'hi!',

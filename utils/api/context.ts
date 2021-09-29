@@ -15,7 +15,7 @@ export const context = async ({ req, res }) => {
         // const { user: auth0User } = await auth0.getSession(req, res);
         const  auth0User  = {
             sub:'my-sub',
-            picture : 'my-picture',
+            picture : '/blank.png',
             nickname: 'my-nickname'
         };
         let user = await prisma.user.findUnique({ where: { auth0: auth0User.sub } });

@@ -17,6 +17,7 @@ model Feed {
   author        User?          @relation("FeedAuthor", fields: [authorId], references: [id])
   authorId      String?
   savedArticles SavedArticle[]
+  bundles       Bundle[]
   tags          FeedTag[]
   likes         User[]         @relation("FeedUserLikes")
 }
@@ -28,6 +29,7 @@ model Bundle {
   author      User?       @relation("BundleAuthor", fields: [authorId], references: [id])
   authorId    String?
   tags        BundleTag[]
+  feeds       Feed[]
   likes       User[]      @relation("BundleUserLikes")
 }
 
