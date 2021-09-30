@@ -17,6 +17,7 @@ export const resolvers = {
         ...createFieldRoselver('feed', 'tags'),
         ...createFieldRoselver('feed', 'bundles'),
         ...createFieldRoselver('feed', 'likes'),
+        ...createFieldRoselver('feed', 'savedArticles'),
     },
 
     Bundle: {
@@ -34,6 +35,18 @@ export const resolvers = {
         ...createFieldRoselver('feedTag', 'feeds'),
     },
 
+    SavedArticle: {
+        ...createFieldRoselver('savedArticle', 'feed'),
+        ...createFieldRoselver('savedArticle', 'author'),
+    },
+
+    User: {
+        ...createFieldRoselver('user', 'feeds'),
+        ...createFieldRoselver('user', 'bundles'),
+        ...createFieldRoselver('user', 'feedLikes'),
+        ...createFieldRoselver('user', 'bundleLikes'),
+    },
+
     Query: {
         hello: (parent, args, context) => 'hi!',
         feed: (parent, { data: { id } }, { prisma }) => prisma.feed.findUnique({ where: { id } }),
@@ -49,6 +62,18 @@ export const resolvers = {
         findFeeds: (parent, { data }, { prisma }) => prisma.feed.findMany({
             where: { name: { contains: data.search } }
         }),
+        savedArticle: async (parent, { data: { url } }, { prisma, user: { id: authorId } }) => {
+
+            const savedArticles = await prisma.savedArticle.findMany({
+                where: { url, authorId }
+            });
+
+            return savedArticles[0];
+        },
+        savedArticles: (parent, args, { prisma, user: { id: authorId } }) => prisma.savedArticle.findMany({
+            where: { authorId: authorId ? authorId : null }
+        }),
+        me: (parent, args, { prisma, user: { id } }) => prisma.user.findUnique({ where: { id } }),
     },
 
     Mutation: {
@@ -127,6 +152,14 @@ export const resolvers = {
                     data: { ...bundleUpdate }
                 }
             );
+        },
+
+        createSavedArticle: async (parent, { data }, { prisma, user }) => {
+            const author = { author: { connect: { id: user.id } } };
+            const savedArticle = prisma.savedArticle.create({
+                data: { ...data, ...author }
+            });
+            return savedArticle;
         },
     }
 };

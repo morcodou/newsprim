@@ -19,6 +19,31 @@ export const typeDefs = gql`
         feeds:[Feed]
     }
 
+    scalar JSON
+
+    type SavedArticle {
+        id:String
+        url:String
+        content:JSON
+        author:User
+        feed:Feed
+    }
+
+    input SavedArticleInput {
+        url:String
+    }
+
+    input SavedArticleCreateInput {
+        id:String
+        url:String
+        content:JSON
+        feed:NestedFeedCreateInput
+    }
+
+    input NestedFeedCreateInput {
+        connect:FeedWhereUniqueInput
+    }
+
     type Feed {
         id:String
         name:String
@@ -27,6 +52,7 @@ export const typeDefs = gql`
         tags:[FeedTag]
         bundles:[Bundle]
         likes:[User]
+        savedArticles:[SavedArticle]
     }
 
     input FeedInput {
@@ -172,6 +198,9 @@ export const typeDefs = gql`
         findFeedTags(data:FindFeedTagsInput):[FeedTag],
         findBundleTags(data:FindBundleTagsInput):[BundleTag],
         findFeeds(data:FindFeedsInput):[Feed],
+        savedArticle(data:SavedArticleInput):SavedArticle,
+        savedArticles:[SavedArticle],
+        me:User
     }
 
 
@@ -182,5 +211,6 @@ export const typeDefs = gql`
         likeFeed(data:LikeFeedInput):Feed,
         updateBundle(data:BundleUpdateInput):Bundle,
         updateFeed(data:FeedUpdateInput):Feed,
+        createSavedArticle(data:SavedArticleCreateInput):SavedArticle,
     }
 `;
