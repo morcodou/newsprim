@@ -189,6 +189,14 @@ export const typeDefs = gql`
         search:String
     }
 
+    input FindBundleTagsInput {
+        search:String
+    }
+
+    input SavedArticleDeleteInput {
+        id:String
+    }
+
     type Query  {
         hello:String,
         feed(data:FeedInput):Feed,
@@ -212,5 +220,8 @@ export const typeDefs = gql`
         updateBundle(data:BundleUpdateInput):Bundle,
         updateFeed(data:FeedUpdateInput):Feed,
         createSavedArticle(data:SavedArticleCreateInput):SavedArticle,
+        deleteSavedArticle(data:SavedArticleDeleteInput):SavedArticle,
+        deleteBundle(data:BundleInput):Bundle,
+        deleteFeed(data:FeedInput):Feed,
     }
 `;
