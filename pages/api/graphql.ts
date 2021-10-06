@@ -6,7 +6,7 @@ import { applyMiddleware } from 'graphql-middleware';
 const schema = applyMiddleware(
     makeExecutableSchema({ typeDefs, resolvers }),
     log,
-    permissions,
+    // permissions,
 );
 
 const apolloServer = new ApolloServer({
