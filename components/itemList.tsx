@@ -1,17 +1,51 @@
 import { useQuery } from "@apollo/client";
-import { BundleObject, FeedObject, ItemType } from "../utils";
+import { Dispatch, SetStateAction, useEffect } from "react";
+import { FeedOrBundleObject, ItemType, SelectedFeedState } from "../utils";
 import { BUNDLES_QUERY, FEEDS_QUERY } from "../utils/api/graphql";
 import { NotifyError } from "./notifyError";
 import { NotifyLoading } from "./notifyLoading";
+import { OneListItem } from "./oneListItem";
 
 
+export const ItemList = (
+    {
+        type,
+        selected,
+        setSelected,
+        useSelected = false,
+        allowEdits = false,
+    }: {
+        type: ItemType,
+        selected?: SelectedFeedState,
+        setSelected?: Dispatch<SetStateAction<SelectedFeedState>>,
+        useSelected: boolean,
+        allowEdits: boolean,
+    }) => {
 
-export const ItemList = ({ type }: { type: ItemType }) => {
     const isFeed = type === ItemType.FeedType;
     const { loading, error, data } = useQuery(isFeed ? FEEDS_QUERY : BUNDLES_QUERY);
     const { feeds, bundles } = data || {};
     const itemList = isFeed ? feeds : bundles;
 
+    useEffect(() => {
+        (async () => {
+            if (
+                useSelected &&
+                itemList &&
+                itemList.length > 0 &&
+                selected.id === null
+            ) {
+                const firstItem = itemList[0];
+                await setSelected({
+                    id: firstItem.id,
+                    feeds: isFeed ? [firstItem] : firstItem['feeds'],
+                    editMode: false,
+                    newMode: false,
+                });
+            }
+        })();
+    });
+    
     if (loading) {
         return <NotifyLoading />
     }
@@ -26,8 +60,16 @@ export const ItemList = ({ type }: { type: ItemType }) => {
                 {
                     itemList && itemList.length > 0 ?
                         (
-                            itemList.map((item: FeedObject | BundleObject) => (
-                                <p key={item.id}> id : {item.id}</p>
+                            itemList.map((item: FeedOrBundleObject) => (
+                                <OneListItem
+                                    key={item.id}
+                                    item={item}
+                                    type={type}
+                                    selected={selected}
+                                    setSelected={setSelected}
+                                    useSelected={useSelected}
+                                    allowEdits={allowEdits}
+                                />
                             ))
                         ) :
                         (

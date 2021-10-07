@@ -5,6 +5,8 @@ export enum ItemType {
     FeedType = 'FeedType'
 };
 
+export type FeedOrBundleObject = FeedObject | BundleObject;
+
 export type FeedObject = {
     id?: string;
     name: string;
@@ -23,4 +25,11 @@ export type BundleObject = {
     feeds: FeedObject[];
     likes?: User[];
     author?: User;
+}
+
+export type SelectedFeedState = {
+    id: string,
+    feeds: FeedObject[],
+    editMode: boolean,
+    newMode: boolean
 }
