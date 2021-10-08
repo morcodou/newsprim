@@ -31,8 +31,7 @@ export const ItemList = (
         (async () => {
             if (
                 useSelected &&
-                itemList &&
-                itemList.length > 0 &&
+                !!itemList?.length &&
                 selected.id === null
             ) {
                 const firstItem = itemList[0];
@@ -45,7 +44,7 @@ export const ItemList = (
             }
         })();
     });
-    
+
     if (loading) {
         return <NotifyLoading />
     }
@@ -58,7 +57,7 @@ export const ItemList = (
         <>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
                 {
-                    itemList && itemList.length > 0 ?
+                    !!itemList?.length ?
                         (
                             itemList.map((item: FeedOrBundleObject) => (
                                 <OneListItem
