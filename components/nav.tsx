@@ -3,7 +3,6 @@ import { useUser } from '@auth0/nextjs-auth0';
 
 export const Nav = () => {
     const { user, error, isLoading } = useUser();
-    // console.log(user, isLoading);
 
     return (
         <ul className="flex grid grid-cols-4">
