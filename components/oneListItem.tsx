@@ -1,7 +1,14 @@
 import { Dispatch, SetStateAction } from "react";
-import { FeedOrBundleObject, ItemType, SelectedFeedState } from "../utils";
+import {
+    ActionType,
+    BadgeFieldName,
+    FeedOrBundleObject,
+    ItemType,
+    SelectedFeedState
+} from "../utils";
 import { DoubleArrowDown, DoubleArrowRight } from "./svg";
 import Link from 'next/link';
+import { BadgeList } from ".";
 
 export const OneListItem = (
     { item,
@@ -23,6 +30,7 @@ export const OneListItem = (
     const isSelected = useSelected && selected?.id === item.id;
     const color = getColor(isFeed);
     const title = getTitle(isFeed);
+    const badgeFieldName = getBadgeFieldName(isFeed);
 
     return (
         <Link href={`/${title.toLowerCase()}/${item.id}`} >
@@ -52,14 +60,20 @@ export const OneListItem = (
                     <div className="col-span-6 py-2">
                         <h3>Tags</h3>
                         <div className="grid grid-cols-3 gap-2">
-                            <p>tags...</p>
+                            <BadgeList item={item}
+                                action={ActionType.NONE}
+                                fieldName={BadgeFieldName.tags}
+                            />
                         </div>
                     </div>
 
                     <div className="col-span-6 py-2">
                         <h3>{title}</h3>
                         <div className="grid grid-cols-3 gap-2">
-                            <p>child items...</p>
+                        <BadgeList item={item}
+                                action={ActionType.NONE}
+                                fieldName={badgeFieldName}
+                            />
                         </div>
                     </div>
                 </div>
@@ -108,4 +122,5 @@ export const OneListItem = (
 }
 
 const getColor = (isFeed: boolean): string => isFeed ? 'green' : 'purple';
-const getTitle = (isFeed: boolean): string => isFeed ? 'Feed' : 'Bundle';
+const getTitle = (isFeed: boolean): string => isFeed ? 'Bundle' : 'Feed';
+const getBadgeFieldName = (isFeed: boolean): BadgeFieldName => isFeed ? BadgeFieldName.bundles : BadgeFieldName.feeds;
