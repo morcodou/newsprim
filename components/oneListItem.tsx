@@ -22,18 +22,19 @@ export const OneListItem = (
         item: FeedOrBundleObject,
         selected?: SelectedFeedState,
         setSelected?: Dispatch<SetStateAction<SelectedFeedState>>,
-        useSelected: boolean,
-        allowEdits: boolean,
+        useSelected?: boolean,
+        allowEdits?: boolean,
     }) => {
 
     const isFeed = type === ItemType.FeedType;
     const isSelected = useSelected && selected?.id === item.id;
     const color = getColor(isFeed);
     const title = getTitle(isFeed);
+    const link = getLink(isFeed);
     const badgeFieldName = getBadgeFieldName(isFeed);
 
     return (
-        <Link href={`/${title.toLowerCase()}/${item.id}`} >
+        <Link href={`/${link}/${item.id}`} >
             <div>
                 <div className={`
         cursor-pointer grid grid-cols-6 p-4 rounded-lg
@@ -54,7 +55,7 @@ export const OneListItem = (
                     </div>
 
                     <div className="flex col-span-6 py-0 space-x-2">
-                        <p>{item.author ? (<p>profile pic</p>) : null}</p>
+                        {item.author ? (<p>profile pic</p>) : null}
                     </div>
 
                     <div className="col-span-6 py-2">
@@ -123,4 +124,5 @@ export const OneListItem = (
 
 const getColor = (isFeed: boolean): string => isFeed ? 'green' : 'purple';
 const getTitle = (isFeed: boolean): string => isFeed ? 'Bundle' : 'Feed';
+const getLink = (isFeed: boolean): string => isFeed ? 'feed' : 'bundle';
 const getBadgeFieldName = (isFeed: boolean): BadgeFieldName => isFeed ? BadgeFieldName.bundles : BadgeFieldName.feeds;

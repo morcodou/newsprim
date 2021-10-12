@@ -3,7 +3,7 @@ import { ItemList, Layout } from "../components";
 import { ItemType, SelectedFeedState } from "../utils";
 
 
-const IndexPage = () => {
+const FeedsPage = () => {
 
     const initialSelected: SelectedFeedState = {
         id: null,
@@ -16,16 +16,19 @@ const IndexPage = () => {
 
     return (
         <Layout>
-            <h3 className="justify-start flex text-lg font-medium py-4">Home Page</h3>
+            <div className="grid grid-cols-2">
+                <h3 className="grid-cols-1 justify-start flex text-lr font-medium py-4">Feeds Page</h3>
+            </div>
+
             <ItemList
                 selected={selected}
                 setSelected={setSelected}
                 useSelected={true}
-                type={ItemType.BundleType}
-                allowEdits={false}
+                type={ItemType.FeedType}
+                allowEdits={true}
             />
         </Layout>
     )
 }
 
-export default IndexPage;
+export default FeedsPage;
