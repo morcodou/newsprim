@@ -34,10 +34,10 @@ export type SelectedFeedState = {
     newMode: boolean
 }
 
-export enum BadgeFieldName  {
+export enum BadgeFieldName {
     tags = 'tags',
-    feeds= 'feeds',
-    bundles= 'bundles',
+    feeds = 'feeds',
+    bundles = 'bundles',
 }
 
 export enum ActionType {
@@ -45,3 +45,5 @@ export enum ActionType {
     CREATE = 'CREATE',
     NONE = 'NONE',
 };
+
+export type NewItemState = FeedObject | BundleObject;

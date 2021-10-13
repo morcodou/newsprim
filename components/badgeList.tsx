@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { ActionType, BadgeFieldName, FeedOrBundleObject, SelectedFeedState } from "../utils";
+import { ActionType, BadgeFieldName, BundleObject, FeedObject, FeedOrBundleObject, SelectedFeedState } from "../utils";
 import { OneBadge } from "./oneBabge";
 
 
@@ -12,7 +12,7 @@ export const BadgeList = (
     }: {
         fieldName: BadgeFieldName,
         action: ActionType,
-        setItem?: Dispatch<SetStateAction<SelectedFeedState>>,
+        setItem?: Dispatch<SetStateAction<FeedObject | BundleObject>>,
         item: FeedOrBundleObject
     }) => {
 
