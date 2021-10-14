@@ -26,9 +26,10 @@ export const BadgeList = (
             {item[fieldName].map(badge => (
                 <OneBadge
                     action={action}
-                    item={item}
+                    item={badge}
                     fieldName={fieldName}
                     key={`${item['id']}-${badge.name}`}
+                    setItem={setItem}
                 />
             ))}
         </>

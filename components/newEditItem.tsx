@@ -7,9 +7,11 @@ import {
     BundleObject,
     FeedObject,
     ItemType,
-    NewItemState
+    NewItemState,
+    SearchQueryName
 } from "../utils";
-import { CREATE_BUNDLE_MUTATION, CREATE_FEED_MUTATION } from "../utils/api/graphql";
+import { CREATE_BUNDLE_MUTATION, CREATE_FEED_MUTATION, FIND_BUNDLE_TAGS_QUERY, FIND_FEEDS_QUERY, FIND_FEED_TAGS_QUERY } from "../utils/api/graphql";
+import { SearchItems } from "./searchItems";
 import { ErrorSign, WaitingClock } from "./svg";
 
 export const NewEditItem = ({ type }: { type: ItemType }) => {
@@ -44,6 +46,8 @@ export const NewEditItem = ({ type }: { type: ItemType }) => {
 
     const inputFields = getInputFields(isFeed);
     const color = getColor(isFeed);
+    const queryName = getQueryName(isFeed);
+    const query = getQuery(isFeed);
 
     return (
         <>
@@ -87,6 +91,13 @@ export const NewEditItem = ({ type }: { type: ItemType }) => {
                         </div>
                         <div className="py-2">
                             <label className="block py-2">Add New Tag:</label>
+                            <SearchItems
+                                currentItem={currentItem}
+                                setItem={setItem}
+                                query={query}
+                                queryName={queryName}
+                                fieldName={BadgeFieldName.tags}
+                            />
                         </div>
 
                         {isFeed ? null : (
@@ -104,6 +115,13 @@ export const NewEditItem = ({ type }: { type: ItemType }) => {
                                 </div>
                                 <div className="py-2">
                                     <label className="block py-2">Add New Feed:</label>
+                                    <SearchItems
+                                        currentItem={currentItem}
+                                        setItem={setItem}
+                                        query={FIND_FEEDS_QUERY}
+                                        queryName={SearchQueryName.findFeeds}
+                                        fieldName={BadgeFieldName.feeds}
+                                    />
                                 </div>
                             </>
                         )}
@@ -131,6 +149,5 @@ const getInitialState = (isFeed: boolean): NewItemState => {
 const getTitle = (isFeed: boolean): string => isFeed ? 'New Feed' : 'New Bundle';
 const getInputFields = (isFeed: boolean): string[] => isFeed ? ['name', 'url'] : ['name', 'description'];
 const getColor = (isFeed: boolean): string => isFeed ? 'green' : 'purple';
-
-// const getLink = (isFeed: boolean): string => isFeed ? 'feed' : 'bundle';
-// const getBadgeFieldName = (isFeed: boolean): BadgeFieldName => isFeed ? BadgeFieldName.bundles : BadgeFieldName.feeds;
+const getQueryName = (isFeed: boolean): SearchQueryName => isFeed ? SearchQueryName.findFeedTags : SearchQueryName.findBundleTags;
+const getQuery = (isFeed: boolean) => isFeed ? FIND_FEED_TAGS_QUERY : FIND_BUNDLE_TAGS_QUERY;
