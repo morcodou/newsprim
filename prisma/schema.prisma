@@ -53,6 +53,8 @@ model SavedArticle {
   author   User?   @relation(fields: [authorId], references: [id])
   authorId String?
   url      String
+
+  @@index([authorId, url])
 }
 
 model BundleTag {
